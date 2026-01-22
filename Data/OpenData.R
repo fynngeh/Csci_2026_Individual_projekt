@@ -57,23 +57,19 @@ get_events_one <- function(match_id) {
   fromJSON(url, flatten = TRUE) |> as_tibble()
 }
 
-# =========================
+
 # Alle Events aus allen Matches holen
-# =========================
 events_all <- map_dfr(match_ids, get_events_one)
 nrow(events_all)
 
-# =========================
+
 # Alle Schüsse filtern
-# =========================
 shots_all <- events_all |>
   filter(type.name == "Shot")
 
 nrow(shots_all)
 
-# =========================
 # Shot-Koordinaten + Zielvariable
-# =========================
 shots_all <- shots_all |>
   mutate(
     x = map_dbl(location, 1),
