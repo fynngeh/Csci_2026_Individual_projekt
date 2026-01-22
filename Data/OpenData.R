@@ -79,3 +79,19 @@ shots_all <- shots_all |>
 
 mean(shots_all$goal)
 
+
+# Tor-Mitte bei (120, 40) im StatsBomb-Koordinatensystem
+# Winkel zwischen den beiden Pfosten (y = 36 und y = 44)
+shots_all <- shots_all |>
+  mutate(
+    dx = 120 - x,
+    dy = 40 - y,
+    distance = sqrt(dx^2 + dy^2),
+    angle = abs(
+      atan2(36 - y, 120 - x) -
+      atan2(44 - y, 120 - x)
+    )
+  )
+
+summary(shots_all$distance)
+summary(shots_all$angle)
