@@ -5,8 +5,8 @@ library(shiny)
                  
 shots_all <- readRDS("Data/shots_all.rds")
 #Bins
-bin_w <- 10   # Breite Bins
-bin_h <- 10   # Höhe Bins
+bin_w <- 10   
+bin_h <- 10   
 
 shots_all <- shots_all |>
   mutate(
