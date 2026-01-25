@@ -25,13 +25,24 @@ bin_summary <- shots_all |>
   )
 
 ui <- fluidPage(
-  titlePanel("Bin Average xG (Bundesliga)"),
-  mainPanel(
-  plotOutput("pitch", height = "600px", click = "pitch_click"),
-  verbatimTextOutput("click_info")
+  titlePanel("Bin Average xG – Bundesliga"),
+
+  sidebarLayout(
+    sidebarPanel(
+      p("Click on a position on the field"),
+      p("The colour shows the expected goals"),
+      p("based on the shots of the last 2 Bundesliga season"),
+      hr(),
+      verbatimTextOutput("click_info")
+    ),
+
+    mainPanel(
+      plotOutput("pitch", height = "600px", click = "pitch_click")
+    )
+  )
 )
 
-)
+
 
 server <- function(input, output, session) {
 
@@ -59,7 +70,7 @@ server <- function(input, output, session) {
         ),
         alpha = 0.9
       ) +
-      scale_fill_gradient(low = "white", high = "red") +
+      scale_fill_gradient(low = "#f7fbff",high = "#cb181d",name = "Avg goal\nprobability")+
       coord_fixed() +
       theme_void()
   })
