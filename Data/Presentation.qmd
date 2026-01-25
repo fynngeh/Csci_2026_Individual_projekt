@@ -1,0 +1,104 @@
+---
+title: "Expected Goals using Spatial Bins"
+author: "Fynn Gehring"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    incremental: false
+---
+
+## Expected Goals using Spatial Bins
+
+An interactive Shiny app  
+based on Bundesliga shot data of the last 2 seasons
+
+## What is this project about?
+
+The goal of this project was to build a simple and interactive way  
+to estimate shot quality in soccer.
+
+Instead of using a complex machine learning model,  
+I focused on a spatial approach:
+
+- where shots are taken from
+- how often shots from that area result in goals
+
+## Data
+
+- Source: StatsBomb Open Data
+- Competition: 1. Bundesliga
+- Data type: event data
+- I only used shots
+
+For each shot, I kept:
+
+- the x and y location
+- whether the shot resulted in a goal
+
+## Basic idea
+
+The pitch is divided into equally sized spatial bins.
+
+For each bin, I calculate:
+
+average goal probability =  
+number of goals / number of shots
+
+This gives an empirical estimate of how likely a shot  
+from that area is to result in a goal.
+
+## Shiny App
+
+I built a Shiny app to visualize this idea.
+
+The app shows:
+
+- a heatmap of the pitch
+- each bin colored by its average goal probability
+
+Users can click on any bin to see:
+
+- how many shots were taken there
+- the average goal probability for that area
+
+## Important note
+
+Some bins contain very few shots.
+
+In those cases:
+
+- the average can be very high or very low
+- this can create extreme values far away from the goal
+
+This is not a coding error.
+It is a data limitation caused by small sample sizes.
+
+## Why this approach?
+
+This method is:
+
+- easy to understand
+- easy to explain
+- visually intuitive
+
+It clearly shows:
+
+- where goals usually come from
+- and where estimates become unreliable due to limited data
+
+## Conclusion
+
+In this project, I built:
+
+- a spatial expected goals visualization
+- based on real Bundesliga data
+- implemented as an interactive Shiny app
+
+The project shows both:
+
+- useful patterns in shot quality
+- and the limitations of raw empirical estimates
+
+
+
