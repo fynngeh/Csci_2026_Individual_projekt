@@ -50,7 +50,7 @@ server <- function(input, output, session) {
     ggplot() +
       # Spielfeld Rand
       geom_rect(aes(xmin = 0, xmax = 120, ymin = 0, ymax = 80),
-                fill = NA, color = "black", linewidth = 1) +
+                fill = "#2E8B57", color = "black", linewidth = 1) +
       # Mittellinie
       geom_segment(aes(x = 60, xend = 60, y = 0, yend = 80),
                    color = "black", linewidth = 0.6) +
@@ -68,11 +68,15 @@ server <- function(input, output, session) {
           ymax = bin_y + bin_h,
           fill = avg_goal
         ),
-        alpha = 0.9
+        alpha = 0.75
       ) +
       scale_fill_gradient(low = "#f7fbff",high = "#cb181d",name = "Avg goal\nprobability")+
       coord_fixed() +
-      theme_void()
+      theme_void() +
+      theme(
+        panel.background = element_rect(fill = "#2E8B57", color = NA),
+        plot.background  = element_rect(fill = "white", color = NA)
+      )
   })
 
   output$click_info <- renderPrint({
@@ -108,6 +112,5 @@ server <- function(input, output, session) {
 
 
  shinyApp(ui, server)
-
 
 
