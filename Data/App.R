@@ -25,7 +25,7 @@ bin_summary <- shots_all |>
   )
 
 ui <- fluidPage(
-  titlePanel("Bin Average xG – Bundesliga"),
+  titlePanel("Average xG – Bundesliga"),
 
   sidebarLayout(
     sidebarPanel(
@@ -36,6 +36,7 @@ ui <- fluidPage(
       verbatimTextOutput("click_info"),
       
       actionButton("add_bin", "Add"),
+      actionButton("reset_xg", "Reset"),
       hr(),
       h4("Total xG"),
       verbatimTextOutput("total_xg")
@@ -136,11 +137,15 @@ server <- function(input, output, session) {
     total_xg(total_xg() + selected_avg())
   })
 
+  observeEvent(input$reset_xg, {
+    total_xg(0)
+  })
+
   output$total_xg <- renderPrint({
     round(total_xg(), 3)
   })
 
-}
+  }
 
 
  shinyApp(ui, server)
