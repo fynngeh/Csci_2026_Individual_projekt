@@ -33,7 +33,12 @@ ui <- fluidPage(
       p("The colour shows the expected goals"),
       p("based on the shots of the last 2 Bundesliga season"),
       hr(),
-      verbatimTextOutput("click_info")
+      verbatimTextOutput("click_info"),
+      
+      actionButton("add_bin", "Add"),
+      hr(),
+      h4("Total xG"),
+      verbatimTextOutput("total_xg")
     ),
 
     mainPanel(
@@ -45,6 +50,9 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+
+  selected_avg <- reactiveVal(NULL)
+  total_xg <- reactiveVal(0)
 
   output$pitch <- renderPlot({
     ggplot() +
@@ -107,10 +115,32 @@ server <- function(input, output, session) {
   )
 })
 
+  observeEvent(input$pitch_click, {
+    click_x <- input$pitch_click$x
+    click_y <- input$pitch_click$y
+
+    bx <- floor(click_x / bin_w) * bin_w
+    by <- floor(click_y / bin_h) * bin_h
+
+    row <- bin_summary |> filter(bin_x == bx, bin_y == by)
+
+    if (nrow(row) == 0) {
+      selected_avg(NULL)
+    } else {
+      selected_avg(row$avg_goal[1])
+    }
+  })
+
+  observeEvent(input$add_bin, {
+    if (is.null(selected_avg())) return()
+    total_xg(total_xg() + selected_avg())
+  })
+
+  output$total_xg <- renderPrint({
+    round(total_xg(), 3)
+  })
 
 }
 
 
  shinyApp(ui, server)
-
-
