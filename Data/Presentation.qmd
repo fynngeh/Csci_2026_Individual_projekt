@@ -1,104 +1,79 @@
 ---
-title: "Expected Goals using Spatial Bins"
+title: "Expected Goals Model"
 author: "Fynn Gehring"
 format:
   revealjs:
     theme: simple
     slide-number: true
     incremental: false
+    code-line-numbers: false
+    code-overflow: wrap
+
 ---
 
-## Expected Goals using Spatial Bins
 
-An interactive Shiny app  
-based on Bundesliga shot data of the last 2 seasons
+## What is Expected Goals?
 
-## What is this project about?
+Expected goals (xG) is a statistic used in football\
+to measure the quality of a shot.
 
-The goal of this project was to build a simple and interactive way  
-to estimate shot quality in soccer.
+Each shot has a probability of resulting in a goal,\
+based on previous shots from similar positions.
 
-Instead of using a complex machine learning model,  
-I focused on a spatial approach:
-
-- where shots are taken from
-- how often shots from that area result in goals
+The idea of this project was to build a simple tool\
+to estimate xG
 
 ## Data
 
-- Source: StatsBomb Open Data
-- Competition: 1. Bundesliga
-- Data type: event data
-- I only used shots
+-   Source: StatsBomb Open Data
+-   Competition: 1. Bundesliga
+-   Data type: event data
+-   I only used shots
 
 For each shot, I kept:
 
-- the x and y location
-- whether the shot resulted in a goal
+-   the x and y location
+-   whether the shot resulted in a goal
 
-## Basic idea
+## Data Collection
 
-The pitch is divided into equally sized spatial bins.
+Getting the data was the hardest part of the project.
 
-For each bin, I calculate:
+Steps: \
+- Load all competitions\
+- Select Bundesliga seasons using competition and season IDs\
+- Load all matches from those seasons - Load all events from the matches\
+- Filter the data so only shots remain\
 
-average goal probability =  
+## Method
+
+I first created a football pitch and then divided into equally sized spatial bins.
+
+For each bin: \
+- all shots inside the bin are collected\
+- the average goal probability is calculated\
+average goal probability =\
 number of goals / number of shots
 
-This gives an empirical estimate of how likely a shot  
-from that area is to result in a goal.
+This gives an xG value for each area of the pitch.
 
-## Shiny App
+## Example
 
-I built a Shiny app to visualize this idea.
+![](Screenshot%202026-01-28%20200222.png){width=100%}
 
-The app shows:
 
-- a heatmap of the pitch
-- each bin colored by its average goal probability
-
-Users can click on any bin to see:
-
-- how many shots were taken there
-- the average goal probability for that area
-
-## Important note
+## Limitations
 
 Some bins contain very few shots.
 
-In those cases:
+If only one shot was taken from a bin and it resulted in a goal, the average xG can become unrealistically high.
 
-- the average can be very high or very low
-- this can create extreme values far away from the goal
-
-This is not a coding error.
-It is a data limitation caused by small sample sizes.
-
-## Why this approach?
-
-This method is:
-
-- easy to understand
-- easy to explain
-- visually intuitive
-
-It clearly shows:
-
-- where goals usually come from
-- and where estimates become unreliable due to limited data
+This is not a coding error, but a limitation caused by small sample sizes.
 
 ## Conclusion
 
-In this project, I built:
+In this project I built:
 
-- a spatial expected goals visualization
-- based on real Bundesliga data
-- implemented as an interactive Shiny app
-
-The project shows both:
-
-- useful patterns in shot quality
-- and the limitations of raw empirical estimates
-
-
-
+-   a expected goals visualization
+-   based on real Bundesliga data
+-   implemented it in interactive Shiny app
